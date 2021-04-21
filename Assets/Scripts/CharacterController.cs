@@ -11,11 +11,17 @@ public class CharacterController : MonoBehaviour
     // Precisamos do rigidbody para computar os movimentos
     private Rigidbody2D rb;
 
+    // Precisamos do animator para ativar as transições entre as animações
+    private Animator anim;
+
     // Verifica se o sprite está olhando para a direita ou não
     private bool isFacingRight = true;
 
     // Verifica se o player pode mexer ou não
     private bool canMove = true;
+
+    // Verifica se o player está atacando ou não
+    protected bool isAttacking = false;
 
     // Velocidade atual do objeto usado para cálculos
     private float currentSpeed = 0f;
@@ -23,16 +29,23 @@ public class CharacterController : MonoBehaviour
     // Tempo para suavizar o movimento
     [SerializeField] private float dampeningTime = 0.15f;
 
+    // Objeto de ataque (players e inimigos)
+    [SerializeField] GameObject attackObject;
+
+
     // Awake é executado antes do Start
-    private void Awake ()
+    protected void Awake ()
     {
-        rb = GetComponent<Rigidbody2D>();        
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update é chamado uma vez por frame
     private void Update()
     {
-        
+        // Atualiza as variáveis de controle do animator
+        anim.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+        anim.SetBool("isAttacking", isAttacking);
     }
 
     protected void PerformMove (Vector2 movement, bool canNormalize)
@@ -84,5 +97,16 @@ public class CharacterController : MonoBehaviour
         // SmoothDamp suaviza o movimento com base em dampeningTime
         Vector2 dampenedVelocity = new Vector2(Mathf.SmoothDamp(rb.velocity.x, 0f, ref currentSpeed, dampeningTime), rb.velocity.y);
         rb.velocity = dampenedVelocity;
+    }
+
+    protected void StartAttack ()
+    {
+        isAttacking = true;
+    }
+
+    public void PerformAttack ()
+    {
+        isAttacking = false;
+        Debug.Log("Atacou!");
     }
 }

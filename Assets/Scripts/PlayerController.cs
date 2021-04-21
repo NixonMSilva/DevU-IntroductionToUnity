@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerController : CharacterController
 {
-
     private float horizontalInput;
 
     // FixedUpdate é chamado uma quantidade fixa por segundos
@@ -23,6 +22,12 @@ public class PlayerController : CharacterController
         else
         {
             StopBody();
+        }
+
+        // Gerencia o input do ataque
+        if (!isAttacking && Input.GetButtonDown("Fire1"))
+        {
+            StartAttack();
         }
 
     }
