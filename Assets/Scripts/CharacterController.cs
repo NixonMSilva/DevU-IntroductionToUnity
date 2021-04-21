@@ -6,7 +6,7 @@ public class CharacterController : MonoBehaviour
 {
     // Health e speed serão variáveis comuns para ambos o jogador e os inimigos
     [SerializeField] private float health = 100f;
-    [SerializeField] private float speed = 100f;
+    [SerializeField] private float speed = 7f;
 
     // Precisamos do rigidbody para computar os movimentos
     private Rigidbody2D rb;
@@ -47,8 +47,7 @@ public class CharacterController : MonoBehaviour
         if (canMove)
         {
             AdjustOrientation(movement);
-            rb.AddForce(movement * Time.fixedDeltaTime * speed, ForceMode2D.Impulse);
-            // rb.MovePosition(rb.position + movement * Time.fixedDeltaTime * speed);
+            rb.velocity = new Vector2(movement.x * speed, rb.velocity.y);
         }
 
     }
