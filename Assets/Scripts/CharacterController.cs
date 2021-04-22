@@ -17,10 +17,10 @@ public class CharacterController : MonoBehaviour
     // Verifica se o sprite está olhando para a direita ou não
     private bool isFacingRight = true;
 
-    // Verifica se o player pode mexer ou não
+    // Verifica se o personagem pode mexer ou não
     private bool canMove = true;
 
-    // Verifica se o player está atacando ou não
+    // Verifica se o personagem está atacando ou não
     protected bool isAttacking = false;
 
     // Velocidade atual do objeto usado para cálculos
@@ -32,7 +32,6 @@ public class CharacterController : MonoBehaviour
     // Objeto de ataque (players e inimigos)
     [SerializeField] GameObject attackObject;
 
-
     // Awake é executado antes do Start
     protected void Awake ()
     {
@@ -41,7 +40,7 @@ public class CharacterController : MonoBehaviour
     }
 
     // Update é chamado uma vez por frame
-    private void Update()
+    protected void Update()
     {
         // Atualiza as variáveis de controle do animator
         anim.SetFloat("speed", Mathf.Abs(rb.velocity.x));
@@ -65,7 +64,7 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    private void AdjustOrientation (Vector2 movement)
+    protected void AdjustOrientation (Vector2 movement)
     {
         // Verifica a direção do movimento e 
         // a qual direção o sprite está olhando
@@ -101,12 +100,14 @@ public class CharacterController : MonoBehaviour
 
     protected void StartAttack ()
     {
+        // Ativa o estado de ataque
         isAttacking = true;
     }
 
     public void PerformAttack ()
     {
+        // Performa a função de ataque
+        // um evento chamado através da animação
         isAttacking = false;
-        Debug.Log("Atacou!");
     }
 }
