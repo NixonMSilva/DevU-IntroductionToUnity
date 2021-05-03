@@ -10,8 +10,14 @@ public class FireballController : MonoBehaviour
     // Quais tipos de objetos esse projétil pode se colidir com
     [SerializeField] private string[] collidableTags;
 
+    // Dano do projétil
+    [SerializeField] private float damage = 10f;
+
     // Precisamos do rigidbody para computar os movimentos
     private Rigidbody2D rb;
+
+    // Variável para armazenar o possível CharacterController do alvo
+    CharacterController characterHit;
 
     // Precisamos do animator para ativar as transições entre as animações
     private Animator anim;
@@ -49,19 +55,20 @@ public class FireballController : MonoBehaviour
         // tag está marcada como colisível
         foreach (string tag in collidableTags)
         {
-            
-
             if (collision.gameObject.CompareTag(tag))
             {
                 // Impede o projétil de se mover durante a colisão
                 isColliding = true;
 
-                Debug.Log("Atingiu alvo");
+                // Se o alvo possuir um CharacterController, aplicar dano
+                if(collision.gameObject.TryGetComponent(out characterHit))
+                {
+                    characterHit.TakeDamage(damage);
+                }
 
                 // Ativa animação de colisão
                 anim.SetBool("isColliding", true);
-            }
-            
+            }  
         }
     }
 

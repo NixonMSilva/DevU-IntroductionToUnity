@@ -7,15 +7,20 @@ public class EnemyRangedController : EnemyController
     // Projétil usado para o ataque
     [SerializeField] private GameObject attackProjectile;
 
-    // Objeto auxiliar de criação do projétil
-    [SerializeField] private GameObject projectileSpawnPosition;
+    // Start é chamado quando a cena é carregada
+    private void Start ()
+    {
+        isMelee = false;
+    }
 
     // Update é chamado uma vez por frame
     // base.Update() copia os conteúdos
     // de EnemyController : Update ()
-    private new void Update()
+    private new void Update ()
     {
         base.Update();
+
+        Debug.Log("Update 3");
 
         // Antes de verificar o threshold, ir para o estado
         // padrão: idle
@@ -78,8 +83,8 @@ public class EnemyRangedController : EnemyController
         {
             base.PerformAttack();
 
-            // Cria o projétil
-            Instantiate(attackProjectile, projectileSpawnPosition.transform.position, projectileSpawnPosition.transform.rotation);
+            // Cria o projétil com base na posição de attackObject
+            Instantiate(attackProjectile, attackObject.transform.position, attackObject.transform.rotation);
 
             // Desativa capacidade de ataque até que possa atacar novamente
             canAttack = false;

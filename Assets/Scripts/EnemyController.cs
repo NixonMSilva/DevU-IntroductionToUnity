@@ -11,7 +11,7 @@ public class EnemyController : CharacterController
 
     // Objeto do player usado como referência
     // em diversas verificações
-    private GameObject player;
+    protected GameObject player;
 
     // Distância do inimigo ao player
     protected float distPlayer;
@@ -33,13 +33,13 @@ public class EnemyController : CharacterController
     // Tempo de espera para criar outro projétil
     [SerializeField] private float attackCooldown = 2f;
 
-    // Variável de contagem do tempo de espero
+    // Variável de contagem do tempo de espera
     private float attackCooldownTimer;
 
     // Awake é executado antes do Start
     // base.Awake() copia os conteúdos
     // de CharacterController : Awake ()
-    private new void Awake ()
+    protected new void Awake ()
     {
         base.Awake();
 
