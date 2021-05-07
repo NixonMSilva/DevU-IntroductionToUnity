@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : CharacterController
 {
+    // Variável que recebe o input horizontal
     private float horizontalInput;
 
     // Colisor da espada
@@ -15,8 +17,29 @@ public class PlayerController : CharacterController
     // Dano do golpe de espada
     [SerializeField] private float swordDamage = 20f;
 
+    // Força do pulo do personagem
+    [SerializeField] private float jumpForce = 10f;
+
+    // Verifica se o personagem está tocando no chão
+    [SerializeField] private bool isGrounded = true;
+
+    // Posição onde verificaremos se o player toca no chão
+    [SerializeField] private Transform groundCheck;
+
+    // Lista de coisas que consideramos como chão
+    [SerializeField] private LayerMask groundMask;
+
     // Controlador da User Interface
     private UIController UI_Controller;
+
+    // Variável de contagem do cooldown do som de passo
+    private float stepSoundCooldownTimer;
+
+    // Tempo de cooldown do som de passo
+    [SerializeField] private float stepSoundTime = 0.25f;
+
+    // Verifica se toca ou não o som de passo
+    private bool canPlayStepSound = true;
 
     // Awake é executado antes do Start
     // base.Awake() copia os conteúdos
@@ -25,6 +48,7 @@ public class PlayerController : CharacterController
     {
         base.Awake();
 
+        // Incializa o colisor do objeto de ataque (a espada)
         attackCollider = attackObject.GetComponent<BoxCollider2D>();
 
         // Pega o controlador da User Interface
@@ -32,6 +56,9 @@ public class PlayerController : CharacterController
         // tem performance ruim, tenha certeza
         // de não usá-las constantemente
         UI_Controller = GameObject.Find("UI").GetComponent<UIController>();
+
+        // Inicializa o contador de cooldown do som de passo
+        stepSoundCooldownTimer = stepSoundTime;
     }
 
     // FixedUpdate é chamado uma quantidade fixa por segundos
@@ -40,12 +67,25 @@ public class PlayerController : CharacterController
         // Gerencia o input horizontal
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
+        // Verifica se o player não está no chão
+        VerifyGrounded();
+
         // Realiza o movimento caso o input seja diferente de zero
         // i.e. há input
         if (!Mathf.Approximately(horizontalInput, 0f))
         {
+            // Executa o movimento
             PerformMove(new Vector2(horizontalInput, 0f), false);
+
+            // Executa o som de passo somente se o player estiver no chão
+            // e pode tocar o som de passo
+            if (isGrounded && canPlayStepSound)
+            {
+                canPlayStepSound = false;
+                audioManager.PlaySound("Walk");
+            }
         }
+
         // Caso contrário, pare o objeto para ele não deslizar
         else
         {
@@ -58,6 +98,29 @@ public class PlayerController : CharacterController
             StartAttack();
         }
 
+        // Gerencia o input de pulo
+        if (isGrounded && Input.GetButtonDown("Jump"))
+        {
+            PerformJump();
+        }
+
+        // Atualiza a variável do animator
+        anim.SetBool("isGrounded", isGrounded);
+    }
+
+    // Update é chamado uma vez por frame
+    // base.Update() copia os conteúdos de
+    // CharacterController : Update ()
+    private new void Update ()
+    {
+        base.Update();
+
+        // Inicia o cooldown do som do passo
+        // caso ele tenha tocado recentemente
+        if (!canPlayStepSound)
+        {
+            UpdateWalkSoundTimer();
+        }
     }
 
     // base.PerformAttack() copia os conteúdos
@@ -69,6 +132,9 @@ public class PlayerController : CharacterController
 
         // Lista que receberá os objetos atingidos pelo player
         List<Collider2D> hitObjects = new List<Collider2D>();
+
+        // Executa o som do ataque
+        audioManager.PlaySound("Slash");
 
         // Verifica quais objetos tocam a espada, e os filtra
         // com base na tag "enemy"
@@ -93,5 +159,45 @@ public class PlayerController : CharacterController
 
         // Atualiza o valor da barra de health
         UI_Controller.UI_UpdateHealth(Health);
+    }
+
+    private void PerformJump ()
+    {
+        // Executa o som do pulo
+        audioManager.PlaySound("Jump");
+
+        // Adicionar uma força no eixo Y ao RigidBody do personagem
+        rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+        isGrounded = false;
+    }
+
+    private void VerifyGrounded ()
+    {
+        // Verifica através de um círculo de raio 0.2 para ver se o player não
+        // está 'tocando' em algum objeto cuja camada é Ground
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f, groundMask);
+
+        // Para cada objeto que colidiu que não seja o próprio player
+        // então ele está no chão
+        foreach (Collider2D collision in colliders)
+        {
+            if (collision.gameObject != this.gameObject)
+            {
+                isGrounded = true;
+            }
+        }
+    }
+
+    private void UpdateWalkSoundTimer ()
+    {
+        // Se o contador tiver zerado, faça alguma coisa
+        if (stepSoundCooldownTimer <= 0)
+        {
+            // Reativa a capacidade de executar
+            // o som de passo
+            canPlayStepSound = true;
+            stepSoundCooldownTimer = stepSoundTime;
+        }
+        stepSoundCooldownTimer -= Time.deltaTime;
     }
 }

@@ -7,6 +7,10 @@ public class EnemyRangedController : EnemyController
     // Projétil usado para o ataque
     [SerializeField] private GameObject attackProjectile;
 
+    //-SOLUÇÃO FIREBALL-//
+    // Objeto do projétil instanciado
+    private GameObject projectile;
+
     // Start é chamado quando a cena é carregada
     private void Start ()
     {
@@ -19,8 +23,6 @@ public class EnemyRangedController : EnemyController
     private new void Update ()
     {
         base.Update();
-
-        Debug.Log("Update 3");
 
         // Antes de verificar o threshold, ir para o estado
         // padrão: idle
@@ -84,7 +86,13 @@ public class EnemyRangedController : EnemyController
             base.PerformAttack();
 
             // Cria o projétil com base na posição de attackObject
-            Instantiate(attackProjectile, attackObject.transform.position, attackObject.transform.rotation);
+            projectile = Instantiate(attackProjectile, attackObject.transform.position, attackObject.transform.rotation);
+
+            //-SOLUÇÃO FIREBALL-//
+            projectile.GetComponent<FireballController>().SetOrientation(transform.localScale);
+
+            // Executa o som da bola de fogo
+            audioManager.PlaySound("Fire");
 
             // Desativa capacidade de ataque até que possa atacar novamente
             canAttack = false;

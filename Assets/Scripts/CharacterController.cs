@@ -10,10 +10,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float speed = 7f;
 
     // Precisamos do rigidbody para computar os movimentos
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
 
     // Precisamos do animator para ativar as transições entre as animações
-    private Animator anim;
+    protected Animator anim;
 
     // Precisamos do renderizador de sprites para efetuar a piscagem
     private SpriteRenderer sprite;
@@ -64,6 +64,8 @@ public class CharacterController : MonoBehaviour
     // Cor da piscagem
     [SerializeField] private Color blinkingColor;
 
+    // Gerenciador de sons
+    protected AudioManager audioManager;
 
     // Awake é executado antes do Start
     protected void Awake ()
@@ -72,6 +74,9 @@ public class CharacterController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
+        // Incializa o gerenciador de audio pegando seu component
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         // Incializa a cor padrão
         defaultColor = sprite.color;
@@ -221,6 +226,9 @@ public class CharacterController : MonoBehaviour
         // Para o objeto
         rb.velocity = Vector2.zero;
 
+        // Executa o som do personagem morrendo
+        audioManager.PlaySound("Collapse");
+
         // Destrói o objeto
         Destroy(this.gameObject);
     }
@@ -232,6 +240,11 @@ public class CharacterController : MonoBehaviour
         // aplica o dano
         if (canTakeDamage)
         {
+            // Executa o som do golpe
+            audioManager.PlaySound("Hit");
+            Debug.Log("Here!");
+
+            // Deduz do health do personagem
             canTakeDamage = false;
             ChangeHealth(-damage);
         }

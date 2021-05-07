@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyControllerMelee : EnemyController
+public class EnemyMeleeController : EnemyController
 {
     // CharacterController do player é armazenado para não
     // ser pego toda que toma dano vez por um GetComponent<>
@@ -14,7 +14,6 @@ public class EnemyControllerMelee : EnemyController
     // Awake é chamado uma vez por frame
     // base.Awake() copia os conteúdos
     // de EnemyController : Awake ()
-   
     private new void Awake ()
     {
         base.Awake();
@@ -92,6 +91,10 @@ public class EnemyControllerMelee : EnemyController
             {
                 if (hit.collider.gameObject.CompareTag("Player"))
                 {
+                    // Executa o som do ataque conectando
+                    audioManager.PlaySound("Bite");
+
+                    // Aplica o dano
                     playerController.TakeDamage(meleeDamage);
                 }
             }

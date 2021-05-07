@@ -25,11 +25,18 @@ public class FireballController : MonoBehaviour
     // Verifica se o projétil não está colidindo com algo
     private bool isColliding = false;
 
+    // Gerenciador de sons
+    private AudioManager audioManager;
+
     // Awake é executado antes do Start
     protected void Awake ()
     {
+        // Incializa os componentes
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        // Incializa o gerenciador de audio pegando seu component
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     // FixedUpdate é chamado uma quantidade fixa de vezes
@@ -66,6 +73,9 @@ public class FireballController : MonoBehaviour
                     characterHit.TakeDamage(damage);
                 }
 
+                // Executa o som da bola de fogo colidindo
+                audioManager.PlaySound("Explosion");
+
                 // Ativa animação de colisão
                 anim.SetBool("isColliding", true);
             }  
@@ -84,5 +94,11 @@ public class FireballController : MonoBehaviour
     public void DestroyFireball ()
     {
         Destroy(gameObject);
+    }
+
+    //-SOLUÇÃO FIREBALL-//
+    public void SetOrientation (Vector3 orientation)
+    {
+        transform.localScale = orientation;
     }
 }
