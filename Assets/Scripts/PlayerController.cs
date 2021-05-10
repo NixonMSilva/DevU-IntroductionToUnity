@@ -41,6 +41,11 @@ public class PlayerController : CharacterController
     // Verifica se toca ou não o som de passo
     private bool canPlayStepSound = true;
 
+    // Armazena o painel do GameOver
+    // Temos que pegar o objeto pelo inspector
+    // pois ele está inativo
+    [SerializeField] private GameObject gameOverPanel;
+
     // Awake é executado antes do Start
     // base.Awake() copia os conteúdos
     // de CharacterController : Awake ()
@@ -59,6 +64,7 @@ public class PlayerController : CharacterController
 
         // Inicializa o contador de cooldown do som de passo
         stepSoundCooldownTimer = stepSoundTime;
+
     }
 
     // FixedUpdate é chamado uma quantidade fixa por segundos
@@ -150,12 +156,11 @@ public class PlayerController : CharacterController
         }
     }
 
-    // Essa função sobescreve completamente
+    // base.ChangeHealth copia os conteúdos de
     // CharacterController : ChangeHealth (float)
     public override void ChangeHealth (float delta)
     {
-        // Muda o valor de health com base em delta
-        Health = Health + delta;
+        base.ChangeHealth(delta);
 
         // Atualiza o valor da barra de health
         UI_Controller.UI_UpdateHealth(Health);
@@ -199,5 +204,49 @@ public class PlayerController : CharacterController
             stepSoundCooldownTimer = stepSoundTime;
         }
         stepSoundCooldownTimer -= Time.deltaTime;
+    }
+
+    // Reescreve a função Die() em CharacterController
+    // para processar a morte do Player, que é única
+    public new void Die ()
+    {
+        // Para o objeto
+        rb.velocity = Vector2.zero;
+
+        // Deleta o sprite do player
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        // Manda o player para longe pra impedir que os inimigos continuem atacando
+        transform.position = new Vector3(-32f, 10f, 0f);
+
+        // Chama a tela de GameOver
+        gameOverPanel.SetActive(true);
+
+        // Impede o player de ser controlado e destroi esse script (PlayerController.cs)
+        // o animator e o rigidbody
+        DestroyComponents();
+    }
+
+    public void EndLevel ()
+    {
+        // Para o objeto
+        rb.velocity = Vector2.zero;
+
+        // Chama a tela de GameOver
+        gameOverPanel.SetActive(true);
+
+        // Impede o player de ser controlado e destroi esse script (PlayerController.cs)
+        // o animator e o rigidbody
+        DestroyComponents();
+    }
+
+    private void DestroyComponents ()
+    {
+        // Impede o player de ser controlado e destroi esse script (PlayerController.cs)
+        // e o animator
+        Destroy(this.GetComponent<CapsuleCollider2D>());
+        Destroy(rb);
+        Destroy(anim);
+        Destroy(this);
     }
 }

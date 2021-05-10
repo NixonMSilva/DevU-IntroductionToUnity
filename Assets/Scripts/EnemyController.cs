@@ -106,7 +106,6 @@ public class EnemyController : CharacterController
     public new void PerformAttack ()
     {
         base.PerformAttack();
-
     }
 
     // Verifica orientação do player e olha pra ele

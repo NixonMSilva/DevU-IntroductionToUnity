@@ -6,7 +6,8 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     // Health e speed serão variáveis comuns para ambos o jogador e os inimigos
-    [SerializeField] private float health = 100f;
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float health;
     [SerializeField] private float speed = 7f;
 
     // Precisamos do rigidbody para computar os movimentos
@@ -95,6 +96,9 @@ public class CharacterController : MonoBehaviour
         {
             blinkingTime = invulnerabilityTime / 3f;
         }
+
+        // Inicializar o health no máximo
+        health = maxHealth;
     }
 
     // Update é chamado uma vez por frame
@@ -219,6 +223,12 @@ public class CharacterController : MonoBehaviour
     {
         // Muda o valor de health com base em delta
         Health = Health + delta;
+
+        // Impede que o health extrapole o maximo
+        if (Health > maxHealth)
+        {
+            Health = maxHealth;
+        }
     }
 
     public void Die ()
@@ -242,7 +252,6 @@ public class CharacterController : MonoBehaviour
         {
             // Executa o som do golpe
             audioManager.PlaySound("Hit");
-            Debug.Log("Here!");
 
             // Deduz do health do personagem
             canTakeDamage = false;
