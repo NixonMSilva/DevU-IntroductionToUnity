@@ -182,6 +182,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &702063083
 Canvas:
   m_ObjectHideFlags: 0
@@ -271,8 +272,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -96}
-  m_SizeDelta: {x: -624.99994, y: -472}
+  m_AnchoredPosition: {x: 6.25, y: -199.86}
+  m_SizeDelta: {x: -612.5, y: -1080.27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &753732998
 MonoBehaviour:
@@ -385,6 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -544,8 +546,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 96}
-  m_SizeDelta: {x: -624.99994, y: -472}
+  m_AnchoredPosition: {x: 6.25, y: 141.23}
+  m_SizeDelta: {x: -612.5, y: -1117.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879915132
 MonoBehaviour:
@@ -658,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
