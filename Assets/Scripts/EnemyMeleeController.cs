@@ -6,7 +6,7 @@ public class EnemyMeleeController : EnemyController
 {
     // CharacterController do player é armazenado para não
     // ser pego toda que toma dano vez por um GetComponent<>
-    private CharacterController playerController;
+    private CharacterGenericController playerController;
 
     // Valor do dano do ataque
     [SerializeField] private float meleeDamage = 25f;
@@ -19,7 +19,7 @@ public class EnemyMeleeController : EnemyController
         base.Awake();
 
         // Armazena o characterController do Player para futuros usos
-        playerController = player.GetComponent<CharacterController>();
+        playerController = player.GetComponent<CharacterGenericController>();
 
         // Uma forma mais eficiente de se fazer a ação acima
         // (para várias instâncias desta classe, por exemplo)

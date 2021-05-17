@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerController : CharacterController
+public class PlayerController : CharacterGenericController
 {
     // Variável que recebe o input horizontal
     private float horizontalInput;
@@ -48,7 +48,7 @@ public class PlayerController : CharacterController
 
     // Awake é executado antes do Start
     // base.Awake() copia os conteúdos
-    // de CharacterController : Awake ()
+    // de CharacterGenericController : Awake ()
     private new void Awake ()
     {
         base.Awake();
@@ -116,7 +116,7 @@ public class PlayerController : CharacterController
 
     // Update é chamado uma vez por frame
     // base.Update() copia os conteúdos de
-    // CharacterController : Update ()
+    // CharacterGenericController : Update ()
     private new void Update ()
     {
         base.Update();
@@ -130,7 +130,7 @@ public class PlayerController : CharacterController
     }
 
     // base.PerformAttack() copia os conteúdos
-    // de CharacterController : PerformAttack ()
+    // de CharacterGenericController : PerformAttack ()
     public new void PerformAttack ()
     {
         // Aplica dano aos inimigos
@@ -150,14 +150,14 @@ public class PlayerController : CharacterController
             {
                 if (collision.gameObject.CompareTag("Enemy"))
                 {
-                    collision.gameObject.GetComponent<CharacterController>().TakeDamage(swordDamage);
+                    collision.gameObject.GetComponent<CharacterGenericController>().TakeDamage(swordDamage);
                 }
             }
         }
     }
 
     // base.ChangeHealth copia os conteúdos de
-    // CharacterController : ChangeHealth (float)
+    // CharacterGenericController : ChangeHealth (float)
     public override void ChangeHealth (float delta)
     {
         base.ChangeHealth(delta);
@@ -206,7 +206,7 @@ public class PlayerController : CharacterController
         stepSoundCooldownTimer -= Time.deltaTime;
     }
 
-    // Reescreve a função Die() em CharacterController
+    // Reescreve a função Die() em CharacterGenericController
     // para processar a morte do Player, que é única
     public new void Die ()
     {

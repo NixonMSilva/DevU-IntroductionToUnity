@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterGenericController : MonoBehaviour
 {
     // Health e speed serão variáveis comuns para ambos o jogador e os inimigos
     [SerializeField] private float maxHealth = 100f;

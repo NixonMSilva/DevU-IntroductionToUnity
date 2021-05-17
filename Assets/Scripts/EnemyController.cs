@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : CharacterController
+public class EnemyController : CharacterGenericController
 {
     // pursueRange  : Persegue player a partir dessa distância
     // attackRange  : Ataca player a partir dessa distância
@@ -38,7 +38,7 @@ public class EnemyController : CharacterController
 
     // Awake é executado antes do Start
     // base.Awake() copia os conteúdos
-    // de CharacterController : Awake ()
+    // de CharacterGenericController : Awake ()
     protected new void Awake ()
     {
         base.Awake();
@@ -59,7 +59,7 @@ public class EnemyController : CharacterController
 
     // Update é chamado uma vez por frame
     // base.Update() copia os conteúdos
-    // de CharacterController : Update ()
+    // de CharacterGenericController : Update ()
     protected new void Update()
     {
         base.Update();
@@ -89,7 +89,7 @@ public class EnemyController : CharacterController
     }
 
     // base.PerformAttack() copia os conteúdos
-    // de CharacterController : StartAttack ()
+    // de CharacterGenericController : StartAttack ()
     protected new void StartAttack ()
     {
         if (canAttack)
@@ -102,7 +102,7 @@ public class EnemyController : CharacterController
     }
 
     // base.PerformAttack() copia os conteúdos
-    // de CharacterController : PerformAttack ()
+    // de CharacterGenericController : PerformAttack ()
     public new void PerformAttack ()
     {
         base.PerformAttack();

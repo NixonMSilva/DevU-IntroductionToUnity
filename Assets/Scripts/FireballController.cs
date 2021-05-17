@@ -17,7 +17,7 @@ public class FireballController : MonoBehaviour
     private Rigidbody2D rb;
 
     // Variável para armazenar o possível CharacterController do alvo
-    CharacterController characterHit;
+    CharacterGenericController characterHit;
 
     // Precisamos do animator para ativar as transições entre as animações
     private Animator anim;
